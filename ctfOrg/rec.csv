@@ -1,29 +1,8 @@
 Name,Date,Format,Location,Weight,Notes
 
-ThunderCipher,"20 Feb., 07:30 UTC — 20 Feb. 2025, 13:30 UTC",Jeopardy,"
-On-line
-",0
-SAIBORG | Elite Hacking Competition | Edition #2 | 21/Feb/2025,"21 Feb., 14:30 UTC — 21 Feb. 2025, 21:00 UTC",Hack quest,"
-
-    Italy, Rome
-
-",0.00," teams will participate
-    
-    
-
-
-"
 Dreamhack CTF Season 7 Round #4 (Div. 2),"22 Feb., 00:00 UTC — 22 Feb. 2025, 15:00 UTC",Jeopardy,"
 On-line
 ",0
-TPCTF 2025,"22 Feb., 01:00 UTC — 24 Feb. 2025, 01:00 UTC",Jeopardy,"
-On-line
-",25.00," teams will participate
-    
-    
-
-
-"
 Kashi CTF 2025,"22 Feb., 12:00 UTC — 23 Feb. 2025, 12:00 UTC",Jeopardy,"
 On-line
 ",0.00," teams will participate
@@ -68,14 +47,16 @@ SECCON CTF 13 International Finals,"01 March, 01:00 UTC — 02 March 2025, 11:00
 
     Tokyo, Japan
 
-",0.00," teams will participate
+",25.00," teams will participate
     
     
 
 
 "
 SECCON CTF 13 Domestic Finals,"01 March, 01:00 UTC — 02 March 2025, 11:00 UTC",Jeopardy,"
-On-line
+
+    Tokyo, Japan
+
 ",25.00," teams will participate
     
     
@@ -85,6 +66,14 @@ On-line
 CSCG 2025,"01 March, 17:00 UTC — 01 May 2025, 16:00 UTC",Jeopardy,"
 On-line
 ",0
+Winja CTF | Nullcon Goa 2025,"02 March, 06:00 UTC — 02 March 2025, 11:00 UTC",Jeopardy,"
+On-line
+",13.00," teams will participate
+    
+    
+
+
+"
 VishwaCTF 2025,"03 March, 10:30 UTC — 05 March 2025, 10:29 UTC",Jeopardy,"
 On-line
 ",27.90," teams will participate
@@ -112,6 +101,22 @@ On-line
 Dreamhack CTF Season 7 Round #5 (Div. 1),"08 March, 00:00 UTC — 08 March 2025, 15:00 UTC",Jeopardy,"
 On-line
 ",0
+TPCTF 2025,"08 March, 01:00 UTC — 10 March 2025, 01:00 UTC",Jeopardy,"
+On-line
+",25.00," teams will participate
+    
+    
+
+
+"
+Ugra CTF Quals 2025,"08 March, 07:00 UTC — 09 March 2025, 19:00 UTC",Jeopardy,"
+On-line
+",32.59," teams will participate
+    
+    
+
+
+"
 DFIR Labs CTF by The DFIR Report,"08 March, 16:00 UTC — 08 March 2025, 20:00 UTC",Jeopardy,"
 On-line
 ",0
@@ -151,9 +156,33 @@ On-line
 
 
 "
+Cyber Apocalypse CTF 2025: Tales from Eldoria,"21 March, 13:00 UTC — 26 March 2025, 12:59 UTC",Jeopardy,"
+On-line
+",24.00," teams will participate
+    
+    
+
+
+"
 pingCTF 2025,"21 March, 19:00 UTC — 23 March 2025, 19:00 UTC",Jeopardy,"
 On-line
 ",32.50," teams will participate
+    
+    
+
+
+"
+WHY2025 CTF Teaser,"21 March, 19:00 UTC — 23 March 2025, 19:00 UTC",Jeopardy,"
+On-line
+",0.00," teams will participate
+    
+    
+
+
+"
+RITSEC CTF 2025,"21 March, 21:00 UTC — 23 March 2025, 21:00 UTC",Jeopardy,"
+On-line
+",34.14," teams will participate
     
     
 
@@ -190,14 +219,6 @@ StealthCup,"28 March, 07:00 UTC — 28 March 2025, 15:00 UTC",Hack quest,"
     Vienna, Austria / Hybrid (Online)
 
 ",0
-RITSEC CTF 2025,"28 March, 12:00 UTC — 30 March 2025, 12:00 UTC",Jeopardy,"
-On-line
-",34.14," teams will participate
-    
-    
-
-
-"
 TAMUctf 2025,"28 March, 17:00 UTC — 30 March 2025, 17:00 UTC",Jeopardy,"
 On-line
 ",56.66," teams will participate
@@ -235,6 +256,14 @@ On-line
 Dreamhack CTF Season 7 Round #6 (Div. 2),"29 March, 00:00 UTC — 29 March 2025, 15:00 UTC",Jeopardy,"
 On-line
 ",0
+Undutmaning 2025,"29 March, 11:00 UTC — 29 March 2025, 19:00 UTC",Jeopardy,"
+On-line
+",24.50," teams will participate
+    
+    
+
+
+"
 SillyCTF 2025,"29 March, 12:00 UTC — 30 March 2025, 00:00 UTC",Jeopardy,"
 On-line
 ",0.00," teams will participate
@@ -304,11 +333,57 @@ On-line
 
 
 "
+THCon 2K25 CTF,"12 April, 08:00 UTC — 12 April 2025, 08:00 UTC",Jeopardy,"
+On-line
+",23.65," teams will participate
+    
+    
+
+
+"
+Midnight Flag CTF - INSURRECTION,"12 April, 08:00 UTC — 13 April 2025, 16:00 UTC",Jeopardy,0.00," teams will participate
+    
+    
+
+
+"
 PwnMe CTF Finals 2025,"12 April, 10:00 UTC — 12 April 2025, 20:00 UTC",Jeopardy,"
 
     Montigny-le-bretonneux
 
 ",0.00," teams will participate
+    
+    
+
+
+"
+SummitCTF 2025,"12 April, 14:00 UTC — 13 April 2025, 14:00 UTC",Jeopardy,"
+On-line
+",0.00," teams will participate
+    
+    
+
+
+"
+DawgCTF 2025,"18 April, 12:00 UTC — 20 April 2025, 12:00 UTC",Jeopardy,"
+On-line
+",69.00," teams will participate
+    
+    
+
+
+"
+b01lers CTF 2025,"18 April, 23:00 UTC — 20 April 2025, 23:00 UTC",Jeopardy,"
+On-line
+",44.50," teams will participate
+    
+    
+
+
+"
+UMassCTF 2025,"18 April, 23:00 UTC — 20 April 2025, 23:00 UTC",Jeopardy,"
+On-line
+",48.38," teams will participate
     
     
 
@@ -325,6 +400,16 @@ On-line
 UMDCTF 2025,"25 April, 22:00 UTC — 27 April 2025, 22:00 UTC",Jeopardy,"
 On-line
 ",70.86," teams will participate
+    
+    
+
+
+"
+ICCSDFAI,"29 April, 11:00 UTC — 30 April 2025, 17:00 UTC",Jeopardy,"
+
+    Astana, Kazakhstan
+
+",0.00," teams will participate
     
     
 
@@ -396,9 +481,25 @@ On-line
 
 
 "
+NNS CTF 2025,"29 Aug., 16:00 UTC — 31 Aug. 2025, 16:00 UTC",Jeopardy,"
+On-line
+",0.00," teams will participate
+    
+    
+
+
+"
 ASIS CTF Quals 2025,"06 Sept., 14:00 UTC — 07 Sept. 2025, 14:00 UTC",Jeopardy,"
 On-line
 ",0.00," teams will participate
+    
+    
+
+
+"
+Platypwn 2025,"15 Nov., 12:00 UTC — 16 Nov. 2025, 12:00 UTC",Jeopardy,"
+On-line
+",33.29," teams will participate
     
     
 
@@ -409,8 +510,5 @@ On-line
 ",100.00," teams will participate
     
     
-
-"
-
 
 "

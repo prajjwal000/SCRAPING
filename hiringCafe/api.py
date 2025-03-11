@@ -1,4 +1,5 @@
 import requests
+import csv
 
 cookies = {
     'ph_phc_PF366Udfg1etPsVw8cx8tlB6ePhBp7KO6E7ncWcXKtd_posthog': '%7B%22distinct_id%22%3A%2201957f56-fc38-7eea-929e-07ef644be8f2%22%2C%22%24sesid%22%3A%5Bnull%2Cnull%2Cnull%5D%7D',
@@ -10,7 +11,7 @@ headers = {
     'Accept': '*/*',
     'Accept-Language': 'en-US,en;q=0.5',
     # 'Accept-Encoding': 'gzip, deflate, br',
-    'Referer': 'https://hiring.cafe/?searchState=%7B%22searchQuery%22%3A%22software+engineer%22%7D',
+    'Referer': 'https://hiring.cafe/',
     # Already added when you pass json=
     # 'Content-Type': 'application/json',
     # 'Content-Length': '3547',
@@ -219,6 +220,41 @@ json_data = {
     },
 }
 
-response = requests.post('https://hiring.cafe/api/search-jobs', cookies=cookies, headers=headers, json=json_data, verify=False)
-print(response.text)
+response = requests.post('https://hiring.cafe/api/search-jobs',
+                         cookies=cookies, headers=headers, json=json_data, verify=False)
+data = response.json()
 
+job_data = []
+for job_entry in data.get("results", []):
+    job_info = job_entry.get("job_information", {})
+    v5_data = job_entry.get("v5_processed_job_data", {})
+    company_data = job_entry.get("v5_processed_company_data", {})
+
+    job = {
+        "title": job_info.get("title"),
+        "core_job_title": v5_data.get("core_job_title"),
+        "company_name": company_data.get("name"),
+        "company_sector_and_industry": company_data.get("industries"),
+        "company_website": company_data.get("website"),
+        "language_requirements": v5_data.get("language_requirements"),
+        "technical_tools": v5_data.get("technical_tools"),
+        "yearly_min_compensation": v5_data.get("yearly_min_compensation"),
+        "yearly_max_compensation": v5_data.get("yearly_max_compensation"),
+        "workplace_countries": v5_data.get("workplace_countries"),
+        "workplace_states": v5_data.get("workplace_states"),
+        "workplace_cities": v5_data.get("workplace_cities"),
+        "formatted_workplace_location": v5_data.get("formatted_workplace_location"),
+        "apply_url": job_entry.get("apply_url"),
+    }
+    job_data.append(job)
+
+# Get header from first entry if it exists
+header = job_data[0].keys() if job_data else []
+
+csv_file = "output.csv"
+with open(csv_file, mode='w', newline='', encoding='utf-8') as file:
+    writer = csv.DictWriter(file, fieldnames=header)
+    writer.writeheader()
+    writer.writerows(job_data)
+
+print("Data written to output.csv")

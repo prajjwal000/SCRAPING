@@ -5,7 +5,7 @@ from random import uniform
 from time import sleep
 
 
-def getPlot(movieID: str, min_rate_limit: float = 3, max_rate_limit: float = 6):
+def getPlot(movieID: str, min_rate_limit: float = 10, max_rate_limit: float = 20):
     url = "https://api.graphql.imdb.com/?operationName=TMD_Storyline&variables=%7B%22locale%22%3A%22en-US%22%2C%22titleId%22%3A%22"+movieID + \
         "%22%7D&extensions=%7B%22persistedQuery%22%3A%7B%22sha256Hash%22%3A%2278f137c28457417c10cf92a79976e54a65f8707bfc4fd1ad035da881ee5eaac6%22%2C%22version%22%3A1%7D%7D"
 
@@ -19,17 +19,19 @@ def getPlot(movieID: str, min_rate_limit: float = 3, max_rate_limit: float = 6):
 
     data = loads(response.text)
 
-    title = data['data']['title']['summaries']['edges'][0]['node']['plotText']['plaidHtml']
-    outline = data['data']['title']['outlines']['edges'][0]['node']['plotText']['plaidHtml']
-    synopsis = data['data']['title']['synopses']['edges'][0]['node']['plotText']['plaidHtml']
-    keywords = [edge['node']['legacyId']
-                for edge in data['data']['title']['storylineKeywords']['edges']]
-    tagline = data['data']['title']['taglines']['edges'][0]['node']['text']
-    genre = data['data']['title']['genres']['genres'][0]['text']
-    certificate = data['data']['title']['certificate']['rating']
-    certificate_reason = data['data']['title']['certificate']['ratingReason']
-    certificate_body = data['data']['title']['certificate']['ratingsBody']['id']
-
+    try:
+        title = data['data']['title']['summaries']['edges'][0]['node']['plotText']['plaidHtml']
+        outline = data['data']['title']['outlines']['edges'][0]['node']['plotText']['plaidHtml']
+        synopsis = data['data']['title']['synopses']['edges'][0]['node']['plotText']['plaidHtml']
+        keywords = [edge['node']['legacyId']
+                    for edge in data['data']['title']['storylineKeywords']['edges']]
+        tagline = data['data']['title']['taglines']['edges'][0]['node']['text']
+        genre = data['data']['title']['genres']['genres'][0]['text']
+        certificate = data['data']['title']['certificate']['rating']
+        certificate_reason = data['data']['title']['certificate']['ratingReason']
+        certificate_body = data['data']['title']['certificate']['ratingsBody']['id']
+    except:
+        return
     conn = sqlite3.connect('imdb.db')
     cursor = conn.cursor()
     # Create the table if it doesn't exist
@@ -49,7 +51,7 @@ def getPlot(movieID: str, min_rate_limit: float = 3, max_rate_limit: float = 6):
     sleep(delay)
 
 
-def getReview(movieID: str, no: int = 25, min_rate_limit: float = 3, max_rate_limit: float = 6):
+def getReview(movieID: str, no: int = 25, min_rate_limit: float = 10, max_rate_limit: float = 20):
     url = "https://api.graphql.imdb.com/?operationName=TitleReviewsRefine&variables=%7B%22const%22%3A%22" + movieID + "%22%2C%22filter%22%3A%7B%7D%2C%22first%22%3A" + \
         str(no) + "%2C%22locale%22%3A%22en-US%22%2C%22sort%22%3A%7B%22by%22%3A%22TOTAL_VOTES%22%2C%22order%22%3A%22DESC%22%7D%7D&extensions=%7B%22persistedQuery%22%3A%7B%22sha256Hash%22%3A%2289aff4cd7503e060ff1dd5aba91885d8bac0f7a21aa1e1f781848a786a5bdc19%22%2C%22version%22%3A1%7D%7D"
 
@@ -98,7 +100,7 @@ def getReview(movieID: str, no: int = 25, min_rate_limit: float = 3, max_rate_li
     sleep(delay)
 
 
-def getTrivia(movieID: str, no: int = 25, min_rate_limit: float = 3, max_rate_limit: float = 6):
+def getTrivia(movieID: str, no: int = 25, min_rate_limit: float = 10, max_rate_limit: float = 20):
     url = "https://api.graphql.imdb.com/?operationName=TitleTriviaPagination&variables={\"const\":\""+movieID + "\",\"filter\":{\"categories\":[\"uncategorized\"],\"spoilers\":\"EXCLUDE_SPOILERS\"},\"first\":"+str(
         no)+",\"locale\":\"en-US\",\"originalTitleText\":false}&extensions={\"persistedQuery\":{\"sha256Hash\":\"16fe8948f4489e0d7f45641919c9b36a7cfb29faeace1910d34f463a0efd973d\",\"version\":1}}"
 
@@ -146,6 +148,58 @@ def getTrivia(movieID: str, no: int = 25, min_rate_limit: float = 3, max_rate_li
     sleep(delay)
 
 
-getPlot("tt7131622")
-getReview("tt7131622", 50)
-getTrivia("tt7131622", 50)
+def searchMovie(movieName: str):
+    url = "https://v3.sg.media-imdb.com/suggestion/x/" + movieName + ".json"
+
+    payload = {}
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:136.0) Gecko/20100101 Firefox/136.0',
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Accept-Encoding': 'gzip, deflate, br, zstd',
+        'Origin': 'https://www.imdb.com',
+        'Connection': 'keep-alive',
+        'Referer': 'https://www.imdb.com/',
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'cross-site',
+        'DNT': '1',
+        'Sec-GPC': '1',
+        'Priority': 'u=0',
+        'Pragma': 'no-cache',
+        'Cache-Control': 'no-cache',
+        'TE': 'trailers'
+    }
+
+    response = requests.request("GET", url, headers=headers, data=payload)
+    data = loads(response.text)
+    movie_ids = [suggestion['id'] for suggestion in data['d']]
+    conn = sqlite3.connect('imdb.db')
+    cursor = conn.cursor()
+
+    # Create the table if it doesn't exist
+    cursor.execute('''CREATE TABLE IF NOT EXISTS movie
+                     (movieid TEXT PRIMARY KEY, movietitle TEXT)''')
+
+    # Insert the data into the table
+    for suggestion in data['d']:
+        try:
+            cursor.execute("INSERT INTO movie VALUES (?, ?)", (
+                suggestion['id'],
+                suggestion['l']
+            ))
+        except sqlite3.Error as e:
+            print(f"Error: Error inserting data for movie ID {
+                  suggestion['id']}, title {suggestion['l']}: {e}")
+
+    conn.commit()
+    conn.close()
+    return movie_ids
+
+
+movieIDs = searchMovie("Godfather")
+for m in movieIDs:
+    getPlot(m)
+    getTrivia(m)
+    getReview(m)
+print(movieIDs)

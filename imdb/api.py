@@ -1,4 +1,4 @@
-import requests
+from curl_cffi import requests
 from json import loads
 import sqlite3
 from random import uniform
@@ -14,7 +14,8 @@ def getPlot(movieID: str, min_rate_limit: float = 3, max_rate_limit: float = 6):
         'content-type': 'application/json'
     }
 
-    response = requests.request("GET", url, headers=headers, data=payload)
+    response = requests.request(
+        "GET", url, headers=headers, data=payload)
 
     data = loads(response.text)
 
@@ -48,9 +49,9 @@ def getPlot(movieID: str, min_rate_limit: float = 3, max_rate_limit: float = 6):
     sleep(delay)
 
 
-def getReview(movieID: str,no: int=25, min_rate_limit: float = 3, max_rate_limit: float = 6):
-    url = "https://api.graphql.imdb.com/?operationName=TitleReviewsRefine&variables=%7B%22const%22%3A%22" + movieID + \
-        "%22%2C%22filter%22%3A%7B%7D%2C%22first%22%3A" + str(no) + "%2C%22locale%22%3A%22en-US%22%2C%22sort%22%3A%7B%22by%22%3A%22TOTAL_VOTES%22%2C%22order%22%3A%22DESC%22%7D%7D&extensions=%7B%22persistedQuery%22%3A%7B%22sha256Hash%22%3A%2289aff4cd7503e060ff1dd5aba91885d8bac0f7a21aa1e1f781848a786a5bdc19%22%2C%22version%22%3A1%7D%7D"
+def getReview(movieID: str, no: int = 25, min_rate_limit: float = 3, max_rate_limit: float = 6):
+    url = "https://api.graphql.imdb.com/?operationName=TitleReviewsRefine&variables=%7B%22const%22%3A%22" + movieID + "%22%2C%22filter%22%3A%7B%7D%2C%22first%22%3A" + \
+        str(no) + "%2C%22locale%22%3A%22en-US%22%2C%22sort%22%3A%7B%22by%22%3A%22TOTAL_VOTES%22%2C%22order%22%3A%22DESC%22%7D%7D&extensions=%7B%22persistedQuery%22%3A%7B%22sha256Hash%22%3A%2289aff4cd7503e060ff1dd5aba91885d8bac0f7a21aa1e1f781848a786a5bdc19%22%2C%22version%22%3A1%7D%7D"
 
     payload = {}
     headers = {
@@ -61,7 +62,8 @@ def getReview(movieID: str,no: int=25, min_rate_limit: float = 3, max_rate_limit
         'content-type': 'application/json'
     }
 
-    response = requests.request("GET", url, headers=headers, data=payload)
+    response = requests.request(
+        "GET", url, headers=headers, data=payload, impersonate="chrome")
     data = loads(response.text)
 
     headers = ['Review ID', 'Author', 'Author Rating',
@@ -96,5 +98,54 @@ def getReview(movieID: str,no: int=25, min_rate_limit: float = 3, max_rate_limit
     sleep(delay)
 
 
+def getTrivia(movieID: str, no: int = 25, min_rate_limit: float = 3, max_rate_limit: float = 6):
+    url = "https://api.graphql.imdb.com/?operationName=TitleTriviaPagination&variables={\"const\":\""+movieID + "\",\"filter\":{\"categories\":[\"uncategorized\"],\"spoilers\":\"EXCLUDE_SPOILERS\"},\"first\":"+str(
+        no)+",\"locale\":\"en-US\",\"originalTitleText\":false}&extensions={\"persistedQuery\":{\"sha256Hash\":\"16fe8948f4489e0d7f45641919c9b36a7cfb29faeace1910d34f463a0efd973d\",\"version\":1}}"
+
+    payload = {}
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:136.0) Gecko/20100101 Firefox/136.0',
+        'Accept': 'application/graphql+json, application/json',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Accept-Encoding': 'gzip, deflate, br, zstd',
+        'Referer': 'https://www.imdb.com/',
+        'content-type': 'application/json',
+        'x-imdb-user-language': 'en-US',
+        'x-imdb-user-country': 'US'
+    }
+
+    response = requests.request(
+        "GET", url, headers=headers, data=payload, impersonate="chrome")
+    data = loads(response.text)
+    conn = sqlite3.connect('imdb.db')
+    cursor = conn.cursor()
+
+    # Create the table if it doesn't exist
+    cursor.execute('''CREATE TABLE IF NOT EXISTS movie_trivia
+                     (movieid TEXT, id TEXT PRIMARY KEY, body TEXT, interest_score_users_voted INTEGER, interest_score_users_interested INTEGER, category_id TEXT, category_text TEXT)''')
+
+    # Insert the data into the table
+    for trivia in data['data']['title']['trivia']['edges']:
+        try:
+            cursor.execute("INSERT INTO movie_trivia VALUES (?, ?, ?, ?, ?, ?, ?)", (
+                movieID,
+                trivia['node']['id'],
+                trivia['node']['displayableArticle']['body']['plaidHtml'],
+                trivia['node']['interestScore']['usersVoted'],
+                trivia['node']['interestScore']['usersInterested'],
+                trivia['node']['category']['id'],
+                trivia['node']['category']['text']
+            ))
+        except sqlite3.Error as e:
+            print(f"Error: Error inserting data for movie ID {
+                  movieID}, trivia ID {trivia['node']['id']}: {e}")
+
+    conn.commit()
+    conn.close()
+    delay = uniform(min_rate_limit, max_rate_limit)
+    sleep(delay)
+
+
 getPlot("tt7131622")
 getReview("tt7131622", 50)
+getTrivia("tt7131622", 50)

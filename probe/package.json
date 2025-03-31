@@ -1,0 +1,10 @@
+{
+  "name": "probe",
+  "packageManager": "yarn@4.8.1",
+  "type": "module",
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "got-scraping": "^4.1.1",
+    "json2csv": "^6.0.0-alpha.2"
+  }
+}
